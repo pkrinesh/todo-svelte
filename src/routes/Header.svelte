@@ -4,15 +4,15 @@
   import github from '$lib/images/github.svg';
 </script>
 
-<header>
+<header class="flex justify-between">
   <div class="corner">
     <a href="https://kit.svelte.dev">
       <img src={logo} alt="SvelteKit" />
     </a>
   </div>
 
-  <nav>
-    <svg viewBox="0 0 2 3" aria-hidden="true">
+  <nav class="flex justify-center">
+    <svg class="fill-[var(--background)]" viewBox="0 0 2 3" aria-hidden="true">
       <path d="M0,0 L1,2 C1.5,3 1.5,3 2,3 L2,0 Z" />
     </svg>
     <ul>
@@ -26,7 +26,7 @@
         <a href="/sverdle">Sverdle</a>
       </li>
     </ul>
-    <svg viewBox="0 0 2 3" aria-hidden="true">
+    <svg class="fill-[var(--background)]" viewBox="0 0 2 3" aria-hidden="true">
       <path d="M0,0 L0,3 C0.5,3 0.5,3 1,2 L2,0 Z" />
     </svg>
   </nav>
@@ -39,11 +39,6 @@
 </header>
 
 <style>
-  header {
-    display: flex;
-    justify-content: space-between;
-  }
-
   .corner {
     width: 3em;
     height: 3em;
@@ -64,8 +59,6 @@
   }
 
   nav {
-    display: flex;
-    justify-content: center;
     --background: rgba(255, 255, 255, 0.7);
   }
 
@@ -73,10 +66,6 @@
     width: 2em;
     height: 3em;
     display: block;
-  }
-
-  path {
-    fill: var(--background);
   }
 
   ul {
