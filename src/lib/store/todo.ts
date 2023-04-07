@@ -1,9 +1,8 @@
+import { browser } from '$app/environment';
 import { nanoid } from 'nanoid';
 import { writable } from 'svelte/store';
-import { browser } from '$app/environment';
-import { onDestroy } from 'svelte';
 
-const TODO_LOCAL_KEY = 'st-todo-list';
+export const TODO_LOCAL_KEY = 'st-todo-list';
 
 type TTodo = {
   id: string;
@@ -21,46 +20,43 @@ function parseJSON<T>(value: string | null): T | undefined {
   }
 }
 
-export function todoStore() {
-  const data = browser
-    ? parseJSON<TTodo[]>(window.localStorage.getItem(TODO_LOCAL_KEY)) ?? [
-        {
-          id: nanoid(),
-          text: 'This is first todo',
-          complete: false
-        }
-      ]
-    : [];
+// export function todoStore() {
+const data = browser
+  ? parseJSON<TTodo[]>(window.localStorage.getItem(TODO_LOCAL_KEY)) ?? [
+      {
+        id: nanoid(),
+        text: 'This is first todo',
+        complete: false
+      }
+    ]
+  : [];
 
-  const todo = writable<TTodo[]>(data);
+export const todos = writable<TTodo[]>(data);
 
-  const unsubscribe = todo.subscribe((store) => {
-    if (browser) {
-      window.localStorage.setItem(TODO_LOCAL_KEY, JSON.stringify(store));
-    }
-  });
+export const unsubscribe = todos.subscribe((store) => {
+  if (browser) {
+    window.localStorage.setItem(TODO_LOCAL_KEY, JSON.stringify(store));
+  }
+});
 
-  onDestroy(unsubscribe);
-
-  class TodoAction {
-    static add() {
-      todo.update((prev) => [...prev, { id: nanoid(), text: '', complete: false }]);
-    }
-
-    static edit(id: string, text: string) {
-      todo.update((prev) => prev.map((todo) => (todo.id === id ? { ...todo, text } : todo)));
-    }
-
-    static toggle_complete(id: string) {
-      todo.update((prev) =>
-        prev.map((todo) => (todo.id === id ? { ...todo, complete: !todo.complete } : todo))
-      );
-    }
-
-    static delete(id: string) {
-      todo.update((prev) => prev.filter((todo) => todo.id !== id));
-    }
+export class Action {
+  static add() {
+    todos.update((prev) => {
+      return [...prev, { id: nanoid(), text: '', complete: false }];
+    });
   }
 
-  return { todo, action: TodoAction };
+  static edit(id: string, text: string) {
+    todos.update((prev) => prev.map((todo) => (todo.id === id ? { ...todo, text } : todo)));
+  }
+
+  static toggle_complete(id: string) {
+    todos.update((prev) =>
+      prev.map((todo) => (todo.id === id ? { ...todo, complete: !todo.complete } : todo))
+    );
+  }
+
+  static delete(id: string) {
+    todos.update((prev) => prev.filter((todo) => todo.id !== id));
+  }
 }
