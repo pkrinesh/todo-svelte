@@ -1,6 +1,6 @@
 <svelte:head>
   <title>Home</title>
-  <meta name="description" content="Svelte Basic app" />
+  <meta name="description" content="Svelte - TODO app" />
 </svelte:head>
 
-<h1 class="text-3xl font-bold text-gray-700">Welcome to sveltekit</h1>
+<h1 class="text-gray-700 text-3xl font-bold">Welcome to sveltekit powered TODO app</h1>
